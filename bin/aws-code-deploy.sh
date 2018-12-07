@@ -358,7 +358,7 @@ else
 
   if [ $EXTENSION == "tar" ]; then
     BUNDLE_TYPE="tar"
-  elif [ $EXTENSION == "tar.gz" ]; then
+  elif [ $EXTENSION == "tar.gz" ] || [ $EXTENSION == "tgz" ]; then
     BUNDLE_TYPE="tgz"
   elif [ $EXTENSION == "zip" ]; then
     BUNDLE_TYPE="zip"
