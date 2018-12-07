@@ -476,8 +476,9 @@ runCommand "${REGISTER_APP_CMD}" \
 # see documentation http://docs.aws.amazon.com/cli/latest/reference/deploy/create-deployment.html
 # ----------------------
 DEPLOYMENT_DESCRIPTION="$AWS_CODE_DEPLOY_DEPLOYMENT_DESCRIPTION"
+FILE_EXISTS_BEHAVIOR=${AWS_CODE_DEPLOY_FILE_EXISTS_BEHAVIOR:-OVERWRITE}
 h1 "Step 10: Creating Deployment"
-DEPLOYMENT_CMD="aws deploy create-deployment --output json --application-name $APPLICATION_NAME --deployment-config-name $DEPLOYMENT_CONFIG_NAME --deployment-group-name $DEPLOYMENT_GROUP --s3-location $S3_LOCATION"
+DEPLOYMENT_CMD="aws deploy create-deployment --output json --application-name $APPLICATION_NAME --deployment-config-name $DEPLOYMENT_CONFIG_NAME --deployment-group-name $DEPLOYMENT_GROUP --s3-location $S3_LOCATION --file-exists-behavior $FILE_EXISTS_BEHAVIOR"
 
 if [ -n "$DEPLOYMENT_DESCRIPTION" ]; then
   DEPLOYMENT_CMD="$DEPLOYMENT_CMD --description \"$DEPLOYMENT_DESCRIPTION\""
