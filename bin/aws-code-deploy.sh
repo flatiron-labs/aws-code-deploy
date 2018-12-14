@@ -394,6 +394,9 @@ if [ "${AWS_CODE_DEPLOY_S3_SSE}" == "true" ]; then
   S3_CP="${S3_CP} --sse AES256"
 fi
 
+# Change the value of this filename variable to be <filename>-<Git SHA>.<extension>
+AWS_CODE_DEPLOY_S3_FILENAME="${AWS_CODE_DEPLOY_S3_FILENAME%.*}-$APPLICATION_VERSION.${AWS_CODE_DEPLOY_S3_FILENAME#*.}"
+
 runCommand "${S3_CP} \"${APP_LOCAL_TEMP_FILE}\" \"s3://${S3_FULL_BUCKET}/${AWS_CODE_DEPLOY_S3_FILENAME}\"" \
            "Unable to copy bundle \"${APP_LOCAL_TEMP_FILE}\" to S3" \
            "Successfully copied bundle \"${APP_LOCAL_TEMP_FILE}\" to s3://${S3_FULL_BUCKET}/${AWS_CODE_DEPLOY_S3_FILENAME}"
