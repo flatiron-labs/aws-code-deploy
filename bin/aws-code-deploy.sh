@@ -213,18 +213,18 @@ fi
 #   $(aws configure set aws_secret_access_key $AWS_CODE_DEPLOY_SECRET 2>&1)
 #   success "Successfully configured AWS Secret Access Key ID."
 # fi
-#
-# if [ -z "$AWS_CODE_DEPLOY_REGION" ]; then
-#   # Ensure AWS region has already been set
-#   if [ $(aws configure list | grep region | wc -l) -lt 1 ]; then
-#     error "No AWS_CODE_DEPLOY_REGION specified and AWS cli is not configured with an existing default region via env, config, or shared credentials"
-#     exit 1
-#   fi
-#   success "AWS Region already configured."
-# else
-#   $(aws configure set default.region $AWS_CODE_DEPLOY_REGION 2>&1)
-#   success "Successfully configured AWS default region."
-# fi
+
+if [ -z "$AWS_CODE_DEPLOY_REGION" ]; then
+  # Ensure AWS region has already been set
+  if [ $(aws configure list | grep region | wc -l) -lt 1 ]; then
+    error "No AWS_CODE_DEPLOY_REGION specified and AWS cli is not configured with an existing default region via env, config, or shared credentials"
+    exit 1
+  fi
+  success "AWS Region already configured."
+else
+  $(aws configure set default.region $AWS_CODE_DEPLOY_REGION 2>&1)
+  success "Successfully configured AWS default region."
+fi
 
 
 
