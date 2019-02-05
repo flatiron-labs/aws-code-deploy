@@ -152,10 +152,10 @@ if [ -z "$AWS_CODE_DEPLOY_S3_BUCKET" ]; then
   exit 1
 fi
 
-if [ -z "$AWS_CODE_DEPLOY_S3_FILENAME" ]; then
-  error "Please set the \"\$AWS_CODE_DEPLOY_S3_FILENAME\" variable"
-  exit 1
-fi
+# if [ -z "$AWS_CODE_DEPLOY_S3_FILENAME" ]; then
+#   error "Please set the \"\$AWS_CODE_DEPLOY_S3_FILENAME\" variable"
+#   exit 1
+# fi
 
 
 
@@ -362,9 +362,7 @@ DEPLOYMENT_GROUP=${AWS_CODE_DEPLOY_DEPLOYMENT_GROUP_NAME:-$DEPLOYTARGET_NAME}
 #   if [ $EXTENSION == "tar" ]; then
 #     BUNDLE_TYPE="tar"
 #   elif [ $EXTENSION == "tar.gz" ] || [ $EXTENSION == "tgz" ]; then
-
-BUNDLE_TYPE="tgz"
-
+#     BUNDLE_TYPE="tgz"
 #   elif [ $EXTENSION == "zip" ]; then
 #     BUNDLE_TYPE="zip"
 #   else
@@ -402,8 +400,8 @@ fi
 # fi
 #
 
-# Change the value of this filename variable to be <filename>-<Git SHA>.<extension>
-AWS_CODE_DEPLOY_S3_FILENAME="${AWS_CODE_DEPLOY_S3_FILENAME%.*}-$APPLICATION_VERSION.${AWS_CODE_DEPLOY_S3_FILENAME#*.}"
+# # Change the value of this filename variable to be <filename>-<Git SHA>.<extension>
+# AWS_CODE_DEPLOY_S3_FILENAME="${AWS_CODE_DEPLOY_S3_FILENAME%.*}-$APPLICATION_VERSION.${AWS_CODE_DEPLOY_S3_FILENAME#*.}"
 
 #
 # runCommand "${S3_CP} \"${APP_LOCAL_TEMP_FILE}\" \"s3://${S3_FULL_BUCKET}/${AWS_CODE_DEPLOY_S3_FILENAME}\"" \
@@ -461,30 +459,30 @@ limit_deployment_revisions() {
 
 
 
-# ----- Register Revision -----
-# see documentation http://docs.aws.amazon.com/cli/latest/reference/deploy/register-application-revision.html
-# ----------------------
-register_revision() {
-  h1 "Step 9: Registering Revision"
-
-  REGISTER_APP_CMD="aws deploy register-application-revision --region us-east-1 --application-name \"$APPLICATION_NAME\""
-
-  if [ -n "$S3_KEY_PREFIX" ]; then
-    S3_LOCATION="bucket=${S3_BUCKET},bundleType=${BUNDLE_TYPE},key=${S3_KEY_PREFIX}/${AWS_CODE_DEPLOY_S3_FILENAME}"
-  else
-    S3_LOCATION="bucket=${S3_BUCKET},bundleType=${BUNDLE_TYPE},key=${AWS_CODE_DEPLOY_S3_FILENAME}"
-  fi
-
-  REGISTER_APP_CMD="${REGISTER_APP_CMD} --s3-location ${S3_LOCATION}"
-
-  if [ ! -z "${AWS_CODE_DEPLOY_REVISION_DESCRIPTION}" ]; then
-      REGISTER_APP_CMD="${REGISTER_APP_CMD} --description \"${AWS_CODE_DEPLOY_REVISION_DESCRIPTION}\""
-  fi
-
-  runCommand "${REGISTER_APP_CMD}" \
-             "Registering revision failed" \
-             "Registering revision succeeded"
-}
+# # ----- Register Revision -----
+# # see documentation http://docs.aws.amazon.com/cli/latest/reference/deploy/register-application-revision.html
+# # ----------------------
+# register_revision() {
+#   h1 "Step 9: Registering Revision"
+#
+#   REGISTER_APP_CMD="aws deploy register-application-revision --region us-east-1 --application-name \"$APPLICATION_NAME\""
+#
+#   if [ -n "$S3_KEY_PREFIX" ]; then
+#     S3_LOCATION="bucket=${S3_BUCKET},bundleType=${BUNDLE_TYPE},key=${S3_KEY_PREFIX}/${AWS_CODE_DEPLOY_S3_FILENAME}"
+#   else
+#     S3_LOCATION="bucket=${S3_BUCKET},bundleType=${BUNDLE_TYPE},key=${AWS_CODE_DEPLOY_S3_FILENAME}"
+#   fi
+#
+#   REGISTER_APP_CMD="${REGISTER_APP_CMD} --s3-location ${S3_LOCATION}"
+#
+#   if [ ! -z "${AWS_CODE_DEPLOY_REVISION_DESCRIPTION}" ]; then
+#       REGISTER_APP_CMD="${REGISTER_APP_CMD} --description \"${AWS_CODE_DEPLOY_REVISION_DESCRIPTION}\""
+#   fi
+#
+#   runCommand "${REGISTER_APP_CMD}" \
+#              "Registering revision failed" \
+#              "Registering revision succeeded"
+# }
 
 
 
